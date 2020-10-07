@@ -11,6 +11,8 @@ import Button from '@material-ui/core/Button';
 import Navigasi from '../../component/navigasi';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Moment from 'react-moment';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -77,7 +79,6 @@ export default function listUser() {
                                 <TableCell><b>Email</b></TableCell>
                                 <TableCell><b>No Telp</b></TableCell>
                                 <TableCell><b>Created At</b></TableCell>
-                                <TableCell><b>Action</b></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -88,15 +89,7 @@ export default function listUser() {
                                     </TableCell>
                                     <TableCell>{row.email}</TableCell>
                                     <TableCell>{row.notelp}</TableCell>
-                                    <TableCell>{row.created_at}</TableCell>
-                                    <TableCell>
-                                        <Link href={'/user/' + row.id}>
-                                            <Button variant="contained" color="primary">
-                                                Edit
-												</Button>
-                                        </Link>
-                                    </TableCell>
-
+                                    <TableCell><Moment format="YYYY-MM-DD HH:MM">{row.created_at}</Moment></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

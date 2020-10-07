@@ -23,25 +23,12 @@ class Home extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			title: 'Component Utama'
+			title: 'Selamat Datang'
 		}
 	}
 
 	componentDidMount() {
-		this.setState({
-			title: 'Almi Kurniawan'
-		});
-		// fetch('https://', {
-		// 	method: 'POST',
-		// 	headers: new Headers({
-		// 		'Authorization': `Bearer ${token}`
-		// 	}),
-		// 	body: formData
-		// })
-		// .then(res => res.json())
-		// .then(result => {
-		// 	self.setState(result);
-		// });
+		
 	}
 
 	render() {
