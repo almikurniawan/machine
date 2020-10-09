@@ -52,7 +52,7 @@ class Edit extends React.Component {
         fetch('http://sikuat.com:8051/machine-counter/apiv1/user/list', {
             method: 'POST',
             headers: new Headers({
-                'Authorization': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token_machine')
             }),
             body: JSON.stringify({
                 'userID': self.props.router.query.userID
@@ -71,7 +71,7 @@ class Edit extends React.Component {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token_machine')
             },
             body: JSON.stringify({
                 "password": self.state.form.password,
@@ -83,7 +83,7 @@ class Edit extends React.Component {
             .then(res => res.json())
             .then(result => {
                 if (result.message == 'Unauthorized access') {
-                    localStorage.removeItem('token');
+                    localStorage.removeItem('token_machine');
                     self.props.router.push('/login');
                 } else {
                     self.props.router.push('/user/listUser');

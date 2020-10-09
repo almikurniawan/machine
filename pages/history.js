@@ -14,30 +14,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Navigasi from '../component/navigasi';
 import TextField from '@material-ui/core/TextField';
-
 import { useRouter } from 'next/router'
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-    toolbar: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: theme.spacing(0, 1),
-        ...theme.mixins.toolbar,
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-    },
-}));
 
-export default function History() {
+const History = ()=> {
     const classes = useStyles();
     const router = useRouter();
     const [title] = useState('History Production');
@@ -48,11 +27,19 @@ export default function History() {
     const [data, setData] = useState([]);
 
     useEffect(() => {
+        getHistory();
+    }, [filterMesin, filterTglAwal, filterTglAkhir]);
+
+    useEffect(() => {
+        getDataMesin();
+    }, []);
+
+    const getHistory = ()=>{
         fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/history-production', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token_machine')
             },
             body: JSON.stringify({
                 'machine_id': filterMesin,
@@ -70,24 +57,20 @@ export default function History() {
                 }
             }).catch(error => {
             });
-    }, [filterMesin, filterTglAwal, filterTglAkhir])
-
-    useEffect(() => {
-        getDataMesin();
-    }, []);
+    }
 
     const getDataMesin = () => {
         fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/list', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token_machine')
             },
         })
             .then(res => res.json())
             .then(result => {
                 if (result.message=='Unauthorized access') {
-                    localStorage.removeItem('token');
+                    localStorage.removeItem('token_machine');
                     router.push('/login');
                 } else {
                     setDataMesin(result.data);
@@ -147,7 +130,7 @@ export default function History() {
                     }}
                 />
                 <Button className={classes.formControl} variant="outlined" color="secondary" onClick={(e)=>{
-                    setFilterMesin();
+                    setFilterMesin('');
                     setFilterTglAwal('');
                     setFilterTglAkhir('');
                 }}>Clear</Button>
@@ -157,8 +140,13 @@ export default function History() {
                             <TableRow>
                                 <TableCell>Mesin</TableCell>
                                 <TableCell>Description</TableCell>
-                                <TableCell>Jam</TableCell>
+                                {/* <TableCell>Jam</TableCell> */}
+                                <TableCell>Widht</TableCell>
+                                <TableCell>Length</TableCell>
+                                <TableCell>Height</TableCell>
                                 <TableCell>Total</TableCell>
+                                <TableCell>Volume</TableCell>
+                                <TableCell>Tanggal</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -168,8 +156,13 @@ export default function History() {
                                         {row.title}
                                     </TableCell>
                                     <TableCell>{row.description}</TableCell>
-                                    <TableCell>{row.hours}</TableCell>
+                                    {/* <TableCell>{row.hours}</TableCell> */}
+                                    <TableCell>{row.width}</TableCell>
+                                    <TableCell>{row.length}</TableCell>
+                                    <TableCell>{row.height}</TableCell>
                                     <TableCell>{row.total}</TableCell>
+                                    <TableCell>{row.volume}</TableCell>
+                                    <TableCell>{row.tanggal}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -179,3 +172,26 @@ export default function History() {
         </div>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
+    toolbar: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: theme.spacing(0, 1),
+        ...theme.mixins.toolbar,
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+    },
+}));
+
+export default History;

@@ -11,6 +11,11 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import HomeIcon from '@material-ui/icons/Home';
+import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
+import HistoryIcon from '@material-ui/icons/History';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import PersonIcon from '@material-ui/icons/Person';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -100,18 +105,18 @@ export default function Navigasi() {
     };
 
     const logout = () => {
-        fetch('http://sikuat.com:8051/apiv1/user/logout', {
+        fetch('http://sikuat.com:8051/machine-counter/apiv1/user/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token_machine')
             },
         })
         .then(res => res.json())
         .then(result => {            
             if(!result.error){
-                localStorage.removeItem('token');
-                router.push('/login');
+                // localStorage.removeItem('token_machine');
+                // router.push('/login');
             }else{
                 setError(result.message)
             }
@@ -141,6 +146,7 @@ export default function Navigasi() {
                     <Typography variant="h6" noWrap className={classes.title}>
                         Machine
                     </Typography>
+                    <Link href="/profil"><Button color="inherit">Profil</Button></Link>
                     <Button onClick={(e)=>logout()} color="inherit">Logout</Button>
                 </Toolbar>
             </AppBar>
@@ -165,31 +171,31 @@ export default function Navigasi() {
                 <List>
                     <Link href="/">
                         <ListItem button>
-                            <ListItemIcon><InboxIcon /></ListItemIcon>
+                            <ListItemIcon><HomeIcon /></ListItemIcon>
                             <ListItemText primary="Home" />
                         </ListItem>
                     </Link>
                     <Link href="/machine/list">
                         <ListItem button>
-                            <ListItemIcon><InboxIcon /></ListItemIcon>
+                            <ListItemIcon><SettingsApplicationsIcon /></ListItemIcon>
                             <ListItemText primary="Machine" />
                         </ListItem>
                     </Link>
                     <Link href="/history/">
                         <ListItem button>
-                            <ListItemIcon><InboxIcon /></ListItemIcon>
+                            <ListItemIcon><HistoryIcon /></ListItemIcon>
                             <ListItemText primary="History" />
                         </ListItem>
                     </Link>
                     <Link href="/dailyreport/">
                         <ListItem button>
-                            <ListItemIcon><InboxIcon /></ListItemIcon>
+                            <ListItemIcon><AssessmentIcon /></ListItemIcon>
                             <ListItemText primary="Daily Report" />
                         </ListItem>
                     </Link>
                     <Link href="/user/listUser">
                         <ListItem button>
-                            <ListItemIcon><InboxIcon /></ListItemIcon>
+                            <ListItemIcon><PersonIcon /></ListItemIcon>
                             <ListItemText primary="User" />
                         </ListItem>
                     </Link>

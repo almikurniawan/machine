@@ -45,7 +45,10 @@ const Dailyreport = ()=> {
     const [dataMesin, setDataMesin] = useState([]);
 
     useEffect(() => {
-        getDataDailyReport();
+        const interval = setInterval(() => {
+            getDataDailyReport();
+        }, 10000);
+        return () => clearInterval(interval);
     },[filterMesin]);
 
     useEffect(()=>{
@@ -57,7 +60,7 @@ const Dailyreport = ()=> {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token_machine')
             },
         })
         .then(res => res.json())
@@ -77,7 +80,7 @@ const Dailyreport = ()=> {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token_machine')
             },
             body : JSON.stringify({
                 'machine_id' : filterMesin
@@ -88,7 +91,7 @@ const Dailyreport = ()=> {
             if (!result.error) {
                 setData(result.data);
             } else {
-                localStorage.removeItem('token');
+                localStorage.removeItem('token_machine');
                 router.push('/login');
             }
         }).catch(error => {
@@ -127,7 +130,12 @@ const Dailyreport = ()=> {
                             <TableRow>
                                 <TableCell>Mesin</TableCell>
                                 <TableCell>Description</TableCell>
+                                <TableCell>Widht</TableCell>
+                                <TableCell>Length</TableCell>
+                                <TableCell>Heigt</TableCell>
+                                <TableCell>Tanggal</TableCell>
                                 <TableCell>Total</TableCell>
+                                <TableCell>Volume</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -137,7 +145,12 @@ const Dailyreport = ()=> {
                                         {row.title}
                                     </TableCell>
                                     <TableCell>{row.description}</TableCell>
+                                    <TableCell>{row.width}</TableCell>
+                                    <TableCell>{row.length}</TableCell>
+                                    <TableCell>{row.height}</TableCell>
+                                    <TableCell>{row.tanggal}</TableCell>
                                     <TableCell>{row.total}</TableCell>
+                                    <TableCell>{row.volume}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

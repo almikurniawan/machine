@@ -8,12 +8,20 @@
     "start": "next start"
   },
   "dependencies": {
+    "@devexpress/dx-chart-core": "^2.7.2",
+    "@devexpress/dx-core": "^2.7.2",
+    "@devexpress/dx-react-chart": "^2.7.2",
+    "@devexpress/dx-react-chart-material-ui": "^2.7.2",
+    "@devexpress/dx-react-core": "^1.11.2",
+    "@devexpress/dx-react-grid": "^1.2.0",
+    "@devexpress/dx-react-grid-material-ui": "^1.2.0",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "fontsource-roboto": "^3.0.3",
     "moment": "^2.29.0",
     "next": "9.5.3",
+    "package.json": "^2.0.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-moment": "^1.0.0"

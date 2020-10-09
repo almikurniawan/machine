@@ -32,7 +32,7 @@ export default function userProfile() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token_machine')
             },
         })
             .then(res => res.json())
@@ -41,7 +41,7 @@ export default function userProfile() {
                 if (!result.error) {
                     setData(result.data)
                 } else {
-                    localStorage.removeItem('token');
+                    localStorage.removeItem('token_machine');
                     router.push('/login');
                 }
             }).catch(error => {

@@ -65,11 +65,11 @@ class List extends React.Component {
 		this.setState({
 			title: 'List Machine'
 		});
-		const token = localStorage.getItem('token');
+		const token = localStorage.getItem('token_machine');
 		fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/list', {
 			method: 'POST',
 			headers: new Headers({
-				'Authorization': `${token}`
+				'Authorization': token
 			}),
 			body : JSON.stringify({
 				'title' : self.state.filterNamaMesin,
@@ -81,7 +81,7 @@ class List extends React.Component {
 			if (result.error == false) {
 				self.setState({ data: result.data })
 			} else {
-				localStorage.removeItem('token');
+				localStorage.removeItem('token_machine');
 				self.props.router.push('/login');
 			}
 		});

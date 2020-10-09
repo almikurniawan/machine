@@ -75,7 +75,7 @@ const Create = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token_machine')
             },
             body : JSON.stringify({
                 'username' : username
@@ -96,7 +96,7 @@ const Create = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token_machine')
             },
             body : JSON.stringify({
                 'email' : email
@@ -117,7 +117,7 @@ const Create = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Authorization': localStorage.getItem('token_machine')
             },
             body : JSON.stringify({
                 'notelp' : noTelp
@@ -151,7 +151,7 @@ const Create = () => {
             .then(res => res.json())
             .then(result => {
                 if (result.message=='Unauthorized access') {
-                    localStorage.removeItem('token');
+                    localStorage.removeItem('token_machine');
                     router.push('/login');
                 } else {
                     router.push('/user/listUser');
