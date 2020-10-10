@@ -105,44 +105,59 @@ const Index = () => {
 			<Navigasi />
 			<main className={classes.content}>
 				<div className={classes.toolbar} />
-				<Container >
-					<h2>Monitoring Machine {loading}</h2>
-					<Grid container justify="center" className={classes.root} spacing={2} style={{ marginBottom: 20, textAlign: "right" }}>
-						{grid.map((value) => (
-							<Grid key={value} item xs={ukuranXS}>
-								<Card style={{
-									padding: 10, paddingRight: 20
-								}} elevation={3}>
-									<h3>{value.title} ({value.width}x{value.length}x{value.height})</h3>
-									<h1>Total {value.total}</h1>
-									<h2>Volume {value.volume}</h2>
-								</Card>
-							</Grid>
-						))}
-					</Grid>
-					<Paper style={{ padding: 20, minHeight:'50px' }}>
-						{
-							(loading) ? 
-							<Grid container justify="center">
-								<Grid item xs={12}>
-									<BarLoader
-										height={5}
-										width="100%"
-										color={"#123abc"}
-										loading={loading}
-									/>
+				{
+					(data.length == 0) ?
+						<Container >
+							<h2>Monitoring Machine</h2>
+							<Paper style={{ padding: 20, minHeight: '50px' }}>
+								<Grid container justify="center" spacing={2}>
+									<img src="./opps-error.png"/>
 								</Grid>
+								<Grid container justify="center" spacing={2}>
+									<h2>Maaf, Tidak ada data yang ditampilkan saat ini</h2>
+								</Grid>
+							</Paper>
+						</Container>
+						:
+						<Container >
+							<h2>Monitoring Machine</h2>
+							<Grid container justify="center" className={classes.root} spacing={2} style={{ marginBottom: 20, textAlign: "right" }}>
+								{grid.map((value) => (
+									<Grid key={value} item xs={ukuranXS}>
+										<Card style={{
+											padding: 10, paddingRight: 20
+										}} elevation={3}>
+											<h3>{value.title} ({value.width}x{value.length}x{value.height})</h3>
+											<h1>Total {value.total}</h1>
+											<h2>Volume {value.volume}</h2>
+										</Card>
+									</Grid>
+								))}
 							</Grid>
-							:	
-							<Chart
-								data={data}>
-								<ArgumentAxis />
-								<ValueAxis />
-								<BarSeries valueField="value" argumentField="argument" />
-							</Chart>
-						}
-					</Paper>
-				</Container>
+							<Paper style={{ padding: 20, minHeight: '50px' }}>
+								{
+									(loading) ?
+										<Grid container justify="center">
+											<Grid item xs={12}>
+												<BarLoader
+													height={5}
+													width="100%"
+													color={"#123abc"}
+													loading={loading}
+												/>
+											</Grid>
+										</Grid>
+										:
+										<Chart
+											data={data}>
+											<ArgumentAxis />
+											<ValueAxis />
+											<BarSeries valueField="value" argumentField="argument" />
+										</Chart>
+								}
+							</Paper>
+						</Container>
+				}
 			</main>
 		</div>
 	);
