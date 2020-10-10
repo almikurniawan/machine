@@ -15,11 +15,14 @@ import Select from '@material-ui/core/Select';
 import Navigasi from '../component/navigasi';
 import TextField from '@material-ui/core/TextField';
 import { useRouter } from 'next/router'
+import Grid from '@material-ui/core/Grid';
+import BarLoader from "react-spinners/BarLoader";
 
-const History = ()=> {
+const History = () => {
     const classes = useStyles();
     const router = useRouter();
     const [title] = useState('History Production');
+    const [loading, setLoading] = useState(true);
     const [filterMesin, setFilterMesin] = useState();
     const [filterTglAwal, setFilterTglAwal] = useState('');
     const [filterTglAkhir, setFilterTglAkhir] = useState('');
@@ -34,7 +37,7 @@ const History = ()=> {
         getDataMesin();
     }, []);
 
-    const getHistory = ()=>{
+    const getHistory = () => {
         fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/history-production', {
             method: 'POST',
             headers: {
@@ -49,11 +52,12 @@ const History = ()=> {
         })
             .then(res => res.json())
             .then(result => {
-                if (result.message=='Unauthorized access') {
+                if (result.message == 'Unauthorized access') {
                     localStorage.removeItem('token');
                     router.push('/login');
                 } else {
                     setData(result.data);
+                    setLoading(false);
                 }
             }).catch(error => {
             });
@@ -69,7 +73,7 @@ const History = ()=> {
         })
             .then(res => res.json())
             .then(result => {
-                if (result.message=='Unauthorized access') {
+                if (result.message == 'Unauthorized access') {
                     localStorage.removeItem('token_machine');
                     router.push('/login');
                 } else {
@@ -112,7 +116,7 @@ const History = ()=> {
                     className={classes.formControl}
                     // defaultValue="2017-05-24"
                     value={filterTglAwal}
-                    onChange={(e)=> setFilterTglAwal(e.target.value)}
+                    onChange={(e) => setFilterTglAwal(e.target.value)}
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -124,49 +128,69 @@ const History = ()=> {
                     className={classes.formControl}
                     // defaultValue="2017-05-24"
                     value={filterTglAkhir}
-                    onChange={(e)=> setFilterTglAkhir(e.target.value)}
+                    onChange={(e) => setFilterTglAkhir(e.target.value)}
                     InputLabelProps={{
                         shrink: true,
                     }}
                 />
-                <Button className={classes.formControl} variant="outlined" color="secondary" onClick={(e)=>{
+                <Button className={classes.formControl} variant="outlined" color="secondary" onClick={(e) => {
                     setFilterMesin('');
                     setFilterTglAwal('');
                     setFilterTglAkhir('');
                 }}>Clear</Button>
-                <TableContainer component={Paper}>
-                    <Table className={classes.table} size="small" style={{ minWidth: 650 }} aria-label="a dense table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Mesin</TableCell>
-                                <TableCell>Description</TableCell>
-                                {/* <TableCell>Jam</TableCell> */}
-                                <TableCell>Widht</TableCell>
-                                <TableCell>Length</TableCell>
-                                <TableCell>Height</TableCell>
-                                <TableCell>Total</TableCell>
-                                <TableCell>Volume</TableCell>
-                                <TableCell>Tanggal</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {data.map((row) => (
-                                <TableRow key={Math.random()}>
-                                    <TableCell component="th" scope="row">
-                                        {row.title}
-                                    </TableCell>
-                                    <TableCell>{row.description}</TableCell>
-                                    {/* <TableCell>{row.hours}</TableCell> */}
-                                    <TableCell>{row.width}</TableCell>
-                                    <TableCell>{row.length}</TableCell>
-                                    <TableCell>{row.height}</TableCell>
-                                    <TableCell>{row.total}</TableCell>
-                                    <TableCell>{row.volume}</TableCell>
-                                    <TableCell>{row.tanggal}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                <TableContainer component={Paper} style={{ minHeight: '50px' }}>
+                    {
+                        (loading) ?
+                            <Grid container justify="center">
+                                <Grid item xs={12}>
+                                    <BarLoader
+                                        height={5}
+                                        width="100%"
+                                        color={"#123abc"}
+                                        loading={loading}
+                                    />
+                                </Grid>
+                            </Grid>
+                            :
+                            <Table className={classes.table} size="small" style={{ minWidth: 650 }} aria-label="a dense table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Mesin</TableCell>
+                                        <TableCell>Description</TableCell>
+                                        {/* <TableCell>Jam</TableCell> */}
+                                        <TableCell>Widht</TableCell>
+                                        <TableCell>Length</TableCell>
+                                        <TableCell>Height</TableCell>
+                                        <TableCell>Total</TableCell>
+                                        <TableCell>Volume</TableCell>
+                                        <TableCell>Tanggal</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
+                                        (data.length == 0) ?
+                                            <TableRow key={Math.random()}>
+                                                <TableCell align="center" component="th" colSpan={8} scope="row">No Data</TableCell>
+                                            </TableRow>
+                                            :
+                                            data.map((row) => (
+                                                <TableRow key={Math.random()}>
+                                                    <TableCell component="th" scope="row">
+                                                        {row.title}
+                                                    </TableCell>
+                                                    <TableCell>{row.description}</TableCell>
+                                                    {/* <TableCell>{row.hours}</TableCell> */}
+                                                    <TableCell>{row.width}</TableCell>
+                                                    <TableCell>{row.length}</TableCell>
+                                                    <TableCell>{row.height}</TableCell>
+                                                    <TableCell>{row.total}</TableCell>
+                                                    <TableCell>{row.volume}</TableCell>
+                                                    <TableCell>{row.tanggal}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                </TableBody>
+                            </Table>
+                    }
                 </TableContainer>
             </main>
         </div>

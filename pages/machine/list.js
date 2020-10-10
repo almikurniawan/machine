@@ -18,7 +18,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { AirlineSeatLegroomExtra } from '@material-ui/icons';
-
+import BarLoader from "react-spinners/BarLoader";
 
 const styles = theme => ({
 	root: {
@@ -49,10 +49,11 @@ class List extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			title: 'Component Utama',
+			title: 'List Machine',
 			data: [],
 			filterNamaMesin: '',
-			filterStatusMesin: ''
+			filterStatusMesin: '',
+			loading : true
 		}
 	}
 
@@ -62,9 +63,6 @@ class List extends React.Component {
 
 	getData(){
 		const self = this;
-		this.setState({
-			title: 'List Machine'
-		});
 		const token = localStorage.getItem('token_machine');
 		fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/list', {
 			method: 'POST',
@@ -79,7 +77,7 @@ class List extends React.Component {
 		.then(res => res.json())
 		.then(result => {
 			if (result.error == false) {
-				self.setState({ data: result.data })
+				self.setState({ data: result.data , loading : false})
 			} else {
 				localStorage.removeItem('token_machine');
 				self.props.router.push('/login');
@@ -126,35 +124,55 @@ class List extends React.Component {
 							Create
 						</Button>
 					</Link>
-					<TableContainer component={Paper}>
-						<Table className={classes.table} size="small" style={{ minWidth: 650 }} aria-label="a dense table">
-							<TableHead>
-								<TableRow>
-									<TableCell><b>Title</b></TableCell>
-									<TableCell><b>Description</b></TableCell>
-									<TableCell><b>Created at</b></TableCell>
-									<TableCell><b>Action</b></TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{dataMachine.map((row) => (
+					<TableContainer component={Paper} style={{minHeight:'50px'}}>
+						{
+							(this.state.loading) ? 
+							<Grid container justify="center">
+								<Grid item xs={12}>
+									<BarLoader
+										height={5}
+										width="100%"
+										color={"#123abc"}
+										loading={this.state.loading}
+									/>
+								</Grid>
+							</Grid>
+							:	
+							<Table className={classes.table} size="small" style={{ minWidth: 650 }} aria-label="a dense table">
+								<TableHead>
 									<TableRow>
-										<TableCell component="th" scope="row">
-											{row.title}
-										</TableCell>
-										<TableCell>{row.description}</TableCell>
-										<TableCell>{row.created_at}</TableCell>
-										<TableCell>
-											<Link href={'/machine/' + row.id}>
-												<Button variant="contained" color="primary">
-													Edit
-												</Button>
-											</Link>
-										</TableCell>
+										<TableCell><b>Title</b></TableCell>
+										<TableCell><b>Description</b></TableCell>
+										<TableCell><b>Created at</b></TableCell>
+										<TableCell><b>Action</b></TableCell>
 									</TableRow>
-								))}
-							</TableBody>
-						</Table>
+								</TableHead>
+								<TableBody>
+									{
+										(dataMachine.length==0) ? 
+										<TableRow key={Math.random()}>
+											<TableCell align="center" component="th" colSpan={4} scope="row">No Data</TableCell>
+										</TableRow>
+										:
+										dataMachine.map((row) => (
+											<TableRow key={Math.random()}>
+												<TableCell component="th" scope="row">
+													{row.title}
+												</TableCell>
+												<TableCell>{row.description}</TableCell>
+												<TableCell>{row.created_at}</TableCell>
+												<TableCell>
+													<Link href={'/machine/' + row.id}>
+														<Button variant="contained" color="primary">
+															Edit
+														</Button>
+													</Link>
+												</TableCell>
+											</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						}
 					</TableContainer>
 				</main>
 			</div>

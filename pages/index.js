@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Navigasi from '../component/navigasi';
 import { Container, Paper, Card, Grid, GridList, GridListTile, GridListTileBar } from '@material-ui/core';
-// import Paper from '@material-ui/core';
+import BarLoader from "react-spinners/BarLoader";
 import {
 	ArgumentAxis,
 	ValueAxis,
@@ -37,6 +37,7 @@ const Index = () => {
 	const [data, setData] = useState([]);
 	const [grid, setGrid] = useState([]);
 	const [ukuranXS, setUkuranXS] = useState(4)
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -73,6 +74,7 @@ const Index = () => {
 						};
 					});
 					setData(data_ku);
+					setLoading(false);
 				}
 			}).catch(error => {
 			});
@@ -93,6 +95,7 @@ const Index = () => {
 				} else {
 					setGrid(result.data);
 					setUkuranXS(12 / result.data.length);
+					setLoading(false);
 				}
 			}).catch(error => {
 			});
@@ -103,32 +106,7 @@ const Index = () => {
 			<main className={classes.content}>
 				<div className={classes.toolbar} />
 				<Container >
-					{/* <GridList className={classes.gridList} cols={2.5}>
-						{grid.map((tile) => (
-							<GridListTile key={tile.img}>
-								<GridListTileBar
-									title={tile.title}
-									classes={{
-										root: classes.titleBar,
-										title: classes.title,
-									}}
-									style={{
-										padding: 10, paddingRight: 20
-									}}
-								>
-									<Card style={{
-										padding: 10, paddingRight: 20
-									}} elevation={3}>
-										<h3>{tile.title}</h3>
-										<h1>Total {tile.total}</h1>
-										<h2>Volume {tile.volume}</h2>
-									</Card>
-
-								</GridListTileBar>
-							</GridListTile>
-						))}
-					</GridList> */}
-					<h2>Monitoring Machine</h2>
+					<h2>Monitoring Machine {loading}</h2>
 					<Grid container justify="center" className={classes.root} spacing={2} style={{ marginBottom: 20, textAlign: "right" }}>
 						{grid.map((value) => (
 							<Grid key={value} item xs={ukuranXS}>
@@ -142,15 +120,27 @@ const Index = () => {
 							</Grid>
 						))}
 					</Grid>
-					<Paper style={{ padding: 20 }}>
-						<Chart
-							data={data}
-						>
-							<ArgumentAxis />
-							<ValueAxis />
-
-							<BarSeries valueField="value" argumentField="argument" />
-						</Chart>
+					<Paper style={{ padding: 20, minHeight:'50px' }}>
+						{
+							(loading) ? 
+							<Grid container justify="center">
+								<Grid item xs={12}>
+									<BarLoader
+										height={5}
+										width="100%"
+										color={"#123abc"}
+										loading={loading}
+									/>
+								</Grid>
+							</Grid>
+							:	
+							<Chart
+								data={data}>
+								<ArgumentAxis />
+								<ValueAxis />
+								<BarSeries valueField="value" argumentField="argument" />
+							</Chart>
+						}
 					</Paper>
 				</Container>
 			</main>

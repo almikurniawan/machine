@@ -13,6 +13,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Grid from '@material-ui/core/Grid';
+
+import BarLoader from "react-spinners/BarLoader";
 
 import Navigasi from '../component/navigasi';
 import { useRouter } from 'next/router'
@@ -36,12 +39,13 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(3),
     },
 }));
-const Dailyreport = ()=> {
+const Dailyreport = () => {
     const classes = useStyles();
     const router = useRouter();
     const [title] = useState('Daily Report');
     const [filterMesin, setFilterMesin] = useState();
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [dataMesin, setDataMesin] = useState([]);
 
     useEffect(() => {
@@ -49,13 +53,13 @@ const Dailyreport = ()=> {
             getDataDailyReport();
         }, 10000);
         return () => clearInterval(interval);
-    },[filterMesin]);
+    }, [filterMesin]);
 
-    useEffect(()=>{
+    useEffect(() => {
         getDataMesin();
-    },[]);
-    
-    const getDataMesin = ()=>{
+    }, []);
+
+    const getDataMesin = () => {
         fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/list', {
             method: 'POST',
             headers: {
@@ -63,39 +67,43 @@ const Dailyreport = ()=> {
                 'Authorization': localStorage.getItem('token_machine')
             },
         })
-        .then(res => res.json())
-        .then(result => {
-            if (!result.error) {
-                setDataMesin(result.data);
-            } else {
-                localStorage.removeItem('token');
-                router.push('/login');
-            }
-        }).catch(error => {
-        });
+            .then(res => res.json())
+            .then(result => {
+                if(result.status = 404){
+                    setLoading(false);
+                }else
+                if (!result.error) {
+                    setDataMesin(result.data);
+                    setLoading(false);
+                } else {
+                    localStorage.removeItem('token');
+                    router.push('/login');
+                }
+            }).catch(error => {
+            });
     }
 
-    const getDataDailyReport = ()=>{
+    const getDataDailyReport = () => {
         fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/daily-report', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': localStorage.getItem('token_machine')
             },
-            body : JSON.stringify({
-                'machine_id' : filterMesin
-            })    
+            body: JSON.stringify({
+                'machine_id': filterMesin
+            })
         })
-        .then(res => res.json())
-        .then(result => {
-            if (!result.error) {
-                setData(result.data);
-            } else {
-                localStorage.removeItem('token_machine');
-                router.push('/login');
-            }
-        }).catch(error => {
-        });
+            .then(res => res.json())
+            .then(result => {
+                if (result.message == 'Unauthorized access') {
+                    localStorage.removeItem('token_machine');
+                    router.push('/login');
+                } else {
+                    setData(result.data);
+                }
+            }).catch(error => {
+            });
     }
 
     return (
@@ -112,49 +120,69 @@ const Dailyreport = ()=> {
                         id="demo-simple-select"
                         value={filterMesin}
                         autoWidth
-                        onChange={(e)=> setFilterMesin(e.target.value)}
+                        onChange={(e) => setFilterMesin(e.target.value)}
                     >
                         <MenuItem value="">
                             <em>Semua</em>
                         </MenuItem>
                         {
-                            dataMesin.map((value, key)=>{
+                            dataMesin.map((value, key) => {
                                 return <MenuItem key={Math.random()} value={value.id}>{value.title}</MenuItem>;
                             })
                         }
                     </Select>
                 </FormControl>
-                <TableContainer component={Paper}>
-                    <Table className={classes.table} size="small" style={{ minWidth: 650 }} aria-label="a dense table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Mesin</TableCell>
-                                <TableCell>Description</TableCell>
-                                <TableCell>Widht</TableCell>
-                                <TableCell>Length</TableCell>
-                                <TableCell>Heigt</TableCell>
-                                <TableCell>Tanggal</TableCell>
-                                <TableCell>Total</TableCell>
-                                <TableCell>Volume</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {data.map((row) => (
-                                <TableRow key={Math.random()}>
-                                    <TableCell component="th" scope="row">
-                                        {row.title}
-                                    </TableCell>
-                                    <TableCell>{row.description}</TableCell>
-                                    <TableCell>{row.width}</TableCell>
-                                    <TableCell>{row.length}</TableCell>
-                                    <TableCell>{row.height}</TableCell>
-                                    <TableCell>{row.tanggal}</TableCell>
-                                    <TableCell>{row.total}</TableCell>
-                                    <TableCell>{row.volume}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                <TableContainer component={Paper} style={{minHeight:'50px'}}>
+                    {
+                        (loading) ?
+                            <Grid container justify="center">
+                                <Grid item xs={12}>
+                                    <BarLoader
+                                        height={5}
+                                        width="100%"
+                                        color={"#123abc"}
+                                        loading={loading}
+                                    />
+                                </Grid>
+                            </Grid>
+                            :
+                            <Table className={classes.table} size="small" style={{ minWidth: 650 }} aria-label="a dense table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Mesin</TableCell>
+                                        <TableCell>Description</TableCell>
+                                        <TableCell>Widht</TableCell>
+                                        <TableCell>Length</TableCell>
+                                        <TableCell>Heigt</TableCell>
+                                        <TableCell>Tanggal</TableCell>
+                                        <TableCell>Total</TableCell>
+                                        <TableCell>Volume</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
+                                (data.length==0) ? 
+										<TableRow key={Math.random()}>
+											<TableCell align="center" component="th" colSpan={8} scope="row">No Data</TableCell>
+										</TableRow>
+										:
+                                    data.map((row) => (
+                                        <TableRow key={Math.random()}>
+                                            <TableCell component="th" scope="row">
+                                                {row.title}
+                                            </TableCell>
+                                            <TableCell>{row.description}</TableCell>
+                                            <TableCell>{row.width}</TableCell>
+                                            <TableCell>{row.length}</TableCell>
+                                            <TableCell>{row.height}</TableCell>
+                                            <TableCell>{row.tanggal}</TableCell>
+                                            <TableCell>{row.total}</TableCell>
+                                            <TableCell>{row.volume}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                    }
                 </TableContainer>
             </main>
         </div>

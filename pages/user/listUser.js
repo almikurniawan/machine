@@ -12,6 +12,8 @@ import Navigasi from '../../component/navigasi';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Moment from 'react-moment';
+import Grid from '@material-ui/core/Grid';
+import BarLoader from "react-spinners/BarLoader";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,6 +39,7 @@ export default function listUser() {
     const classes = useStyles();
     const router = useRouter();
     const [title] = useState('List User');
+    const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -51,7 +54,8 @@ export default function listUser() {
             .then(result => {
                 console.log(result)
                 if (!result.error) {
-                    setData(result.data)
+                    setData(result.data);
+                    setLoading(false);
                 } else {
                     localStorage.removeItem('token_machine');
                     router.push('/login');
@@ -71,29 +75,48 @@ export default function listUser() {
                         Add New User
 					</Button>
                 </Link>
-                <TableContainer component={Paper}>
-                    <Table className={classes.table} size="small" style={{ minWidth: 650 }} aria-label="a dense table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell><b>Username</b></TableCell>
-                                <TableCell><b>Email</b></TableCell>
-                                <TableCell><b>No Telp</b></TableCell>
-                                <TableCell><b>Created At</b></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {data.map((row) => (
-                                <TableRow key={Math.random()}>
-                                    <TableCell component="th" scope="row">
-                                        {row.username}
-                                    </TableCell>
-                                    <TableCell>{row.email}</TableCell>
-                                    <TableCell>{row.notelp}</TableCell>
-                                    <TableCell><Moment format="YYYY-MM-DD HH:MM">{row.created_at}</Moment></TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                <TableContainer component={Paper} style={{ minHeight: '50px' }}>
+                    {
+                        (loading) ?
+                            <Grid container justify="center">
+                                <Grid item xs={12}>
+                                    <BarLoader
+                                        height={5}
+                                        width="100%"
+                                        color={"#123abc"}
+                                        loading={loading}
+                                    />
+                                </Grid>
+                            </Grid>
+                            :
+                            <Table className={classes.table} size="small" style={{ minWidth: 650 }} aria-label="a dense table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell><b>Username</b></TableCell>
+                                        <TableCell><b>Email</b></TableCell>
+                                        <TableCell><b>No Telp</b></TableCell>
+                                        <TableCell><b>Created At</b></TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {(data.length == 0) ?
+                                        <TableRow key={Math.random()}>
+                                            <TableCell align="center" component="th" colSpan={4} scope="row">No Data</TableCell>
+                                        </TableRow>
+                                        :
+                                        data.map((row) => (
+                                            <TableRow key={Math.random()}>
+                                                <TableCell component="th" scope="row">
+                                                    {row.username}
+                                                </TableCell>
+                                                <TableCell>{row.email}</TableCell>
+                                                <TableCell>{row.notelp}</TableCell>
+                                                <TableCell><Moment format="YYYY-MM-DD HH:MM">{row.created_at}</Moment></TableCell>
+                                            </TableRow>
+                                        ))}
+                                </TableBody>
+                            </Table>
+                    }
                 </TableContainer>
             </main>
         </div>
