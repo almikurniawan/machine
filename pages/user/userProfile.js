@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Paper, Card, Container, CardContent } from '@material-ui/core';
 import Navigasi from '../../component/navigasi';
+import setting from '../../component/setting';
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -28,7 +29,7 @@ export default function userProfile() {
     const [title] = useState('Profile');
     const [data, setData] = useState([]);
     useEffect(() => {
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/user/profile', {
+        fetch(setting.base_url+'user/profile', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

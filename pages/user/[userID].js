@@ -9,7 +9,7 @@ import { useRouter, withRouter } from 'next/router';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Navigasi from '../../component/navigasi';
-
+import setting from '../../component/setting';
 
 const styles = theme => ({
     root: {
@@ -49,7 +49,7 @@ class Edit extends React.Component {
         this.setState({
             title: 'Edit Profile'
         });
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/user/list', {
+        fetch(setting.base_url+'user/list', {
             method: 'POST',
             headers: new Headers({
                 'Authorization': localStorage.getItem('token_machine')
@@ -67,7 +67,7 @@ class Edit extends React.Component {
     }
     simpan() {
         const self = this;
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/user/edit', {
+        fetch(setting.base_url+'user/edit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

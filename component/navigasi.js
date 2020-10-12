@@ -23,6 +23,7 @@ import Button from '@material-ui/core/Button';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
+import setting from './setting';
 
 const drawerWidth = 240;
 
@@ -105,7 +106,7 @@ export default function Navigasi() {
     };
 
     const logout = () => {
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/user/logout', {
+        fetch(setting.base_url+'user/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -115,8 +116,8 @@ export default function Navigasi() {
         .then(res => res.json())
         .then(result => {            
             if(!result.error){
-                // localStorage.removeItem('token_machine');
-                // router.push('/login');
+                localStorage.removeItem('token_machine');
+                router.push('/login');
             }else{
                 setError(result.message)
             }

@@ -10,6 +10,7 @@ import {
 	Chart,
 	BarSeries,
 } from '@devexpress/dx-react-chart-material-ui';
+import setting from '../component/setting';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -54,7 +55,7 @@ const Index = () => {
 	}, []);
 
 	const getDataDailyReport = () => {
-		fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/grafik-report', {
+		fetch(setting.base_url+'machine/grafik-report', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -80,7 +81,7 @@ const Index = () => {
 			});
 	}
 	const getDataGrid = () => {
-		fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/daily-report', {
+		fetch(setting.base_url+'machine/daily-report', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

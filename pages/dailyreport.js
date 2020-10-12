@@ -18,6 +18,7 @@ import Grid from '@material-ui/core/Grid';
 import BarLoader from "react-spinners/BarLoader";
 
 import Navigasi from '../component/navigasi';
+import setting from '../component/setting';
 import { useRouter } from 'next/router'
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -60,7 +61,7 @@ const Dailyreport = () => {
     }, []);
 
     const getDataMesin = () => {
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/list', {
+        fetch(setting.base_url+'machine/list', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,7 +85,7 @@ const Dailyreport = () => {
     }
 
     const getDataDailyReport = () => {
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/daily-report', {
+        fetch(setting.base_url+'machine/daily-report', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -153,7 +154,7 @@ const Dailyreport = () => {
                                         <TableCell>Description</TableCell>
                                         <TableCell>Widht</TableCell>
                                         <TableCell>Length</TableCell>
-                                        <TableCell>Heigt</TableCell>
+                                        <TableCell>Thick</TableCell>
                                         <TableCell>Tanggal</TableCell>
                                         <TableCell>Total</TableCell>
                                         <TableCell>Volume</TableCell>

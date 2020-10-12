@@ -14,7 +14,7 @@ import Link from 'next/link';
 import Moment from 'react-moment';
 import Grid from '@material-ui/core/Grid';
 import BarLoader from "react-spinners/BarLoader";
-
+import setting from '../../component/setting';
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -43,7 +43,7 @@ export default function listUser() {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/user/list', {
+        fetch(setting.base_url+'user/list', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,7 +52,6 @@ export default function listUser() {
         })
             .then(res => res.json())
             .then(result => {
-                console.log(result)
                 if (!result.error) {
                     setData(result.data);
                     setLoading(false);

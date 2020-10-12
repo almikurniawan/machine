@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Navigasi from '../../component/navigasi';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import setting from '../../component/setting';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -71,7 +72,7 @@ const Create = () => {
     },[validusername, validemail, validnoTelp]);
 
     const cekUsername = () =>{
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/user/validation-username', {
+        fetch(setting.base_url+'user/validation-username', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -92,7 +93,7 @@ const Create = () => {
             });
     }
     const cekEmail = () =>{
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/user/validation-email', {
+        fetch(setting.base_url+'user/validation-email', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -113,7 +114,7 @@ const Create = () => {
             });
     }
     const cekNoTelp = () =>{
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/user/validation-notelp', {
+        fetch(setting.base_url+'user/validation-notelp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -135,7 +136,7 @@ const Create = () => {
     }
 
     const simpan = ()=>{
-		fetch('http://sikuat.com:8051/machine-counter/apiv1/user/adduser', {
+		fetch(setting.base_url+'user/adduser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

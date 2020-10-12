@@ -17,8 +17,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { AirlineSeatLegroomExtra } from '@material-ui/icons';
 import BarLoader from "react-spinners/BarLoader";
+import setting from '../../component/setting';
 
 const styles = theme => ({
 	root: {
@@ -64,23 +64,30 @@ class List extends React.Component {
 	getData(){
 		const self = this;
 		const token = localStorage.getItem('token_machine');
-		fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/list', {
+		let filter = {
+		};
+		if(this.state.filterNamaMesin!=''){
+			filter.title = this.state.filterNamaMesin
+		}
+		if(this.state.filterStatusMesin!=''){
+			filter.status = this.state.filterStatusMesin
+		}
+
+		fetch(setting.base_url+'machine/list', {
 			method: 'POST',
 			headers: new Headers({
+				'Content-Type': 'application/json',
 				'Authorization': token
 			}),
-			body : JSON.stringify({
-				'title' : self.state.filterNamaMesin,
-				'status' : self.state.filterStatusMesin,
-			})
+			body : JSON.stringify(filter)
 		})
 		.then(res => res.json())
 		.then(result => {
-			if (result.error == false) {
-				self.setState({ data: result.data , loading : false})
-			} else {
+			if (result.message == 'Unauthorized access') {
 				localStorage.removeItem('token_machine');
 				self.props.router.push('/login');
+			} else {
+				self.setState({ data: result.data , loading : false})
 			}
 		});
 	}
@@ -114,8 +121,8 @@ class List extends React.Component {
 								<MenuItem value="">
 									<em>Semua</em>
 								</MenuItem>
-								<MenuItem value={0}>Tidak Aktif</MenuItem>
-								<MenuItem value={1}>Aktif</MenuItem>
+								<MenuItem value="0">Tidak Aktif</MenuItem>
+								<MenuItem value="1">Aktif</MenuItem>
 							</Select>
 						</FormControl>
 					</Grid>

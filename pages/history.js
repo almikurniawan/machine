@@ -17,6 +17,7 @@ import TextField from '@material-ui/core/TextField';
 import { useRouter } from 'next/router'
 import Grid from '@material-ui/core/Grid';
 import BarLoader from "react-spinners/BarLoader";
+import setting from '../component/setting';
 
 const History = () => {
     const classes = useStyles();
@@ -38,7 +39,7 @@ const History = () => {
     }, []);
 
     const getHistory = () => {
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/history-production', {
+        fetch(setting.base_url+'machine/history-production', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -64,7 +65,7 @@ const History = () => {
     }
 
     const getDataMesin = () => {
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/list', {
+        fetch(setting.base_url+'machine/list', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -160,7 +161,7 @@ const History = () => {
                                         {/* <TableCell>Jam</TableCell> */}
                                         <TableCell>Widht</TableCell>
                                         <TableCell>Length</TableCell>
-                                        <TableCell>Height</TableCell>
+                                        <TableCell>Thick</TableCell>
                                         <TableCell>Total</TableCell>
                                         <TableCell>Volume</TableCell>
                                         <TableCell>Tanggal</TableCell>

@@ -13,6 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import setting from '../../component/setting';
 
 const styles = theme => ({
 	root: {
@@ -49,7 +50,7 @@ class Edit extends React.Component {
 
 	componentDidMount() {
 		const self = this;
-		fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/list', {
+		fetch(setting.base_url+'machine/list', {
 			method: 'POST',
 			headers: new Headers({
 				'Authorization': localStorage.getItem('token_machine')
@@ -68,7 +69,7 @@ class Edit extends React.Component {
 
 	simpan(){
 		const self = this;
-		fetch('http://sikuat.com:8051/machine-counter/apiv1/machine/edit', {
+		fetch(setting.base_url+'machine/edit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -4,6 +4,7 @@ import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Navigasi from '../component/navigasi';
+import setting from '../component/setting';
 
 const profil = () => {
     const classes = useStyles();
@@ -18,8 +19,7 @@ const profil = () => {
     },[]);
 
     const getProfil = ()=>{
-        // http://sikuat.com:8051/machine-counter/apiv1/user/profile
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/user/profile', {
+        fetch(setting.base_url+'user/profile', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -41,8 +41,7 @@ const profil = () => {
     }
 
     const simpan = () => {
-        // http://sikuat.com:8051/machine-counter/apiv1/user/edit
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/user/edit', {
+        fetch(setting.base_url+'user/edit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

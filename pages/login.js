@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import Alert from '@material-ui/lab/Alert';
 import { useRouter } from 'next/router';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import setting from '../component/setting';
 
 export default function login() {
     const classes = useStyles();
@@ -23,7 +24,7 @@ export default function login() {
 
     const login = () => {
         setLoading(true);
-        fetch('http://sikuat.com:8051/machine-counter/apiv1/user/authentication', {
+        fetch(setting.base_url+'user/authentication', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
