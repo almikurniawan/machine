@@ -183,7 +183,7 @@ const History = () => {
                                                     {/* <TableCell>{row.hours}</TableCell> */}
                                                     <TableCell>{row.width}</TableCell>
                                                     <TableCell>{row.length}</TableCell>
-                                                    <TableCell>{row.height}</TableCell>
+                                                    <TableCell>{row.thick}</TableCell>
                                                     <TableCell>{row.total}</TableCell>
                                                     <TableCell>{row.volume}</TableCell>
                                                     <TableCell>{row.tanggal}</TableCell>

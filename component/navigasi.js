@@ -24,6 +24,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 import setting from './setting';
+import BeatLoader from "react-spinners/BeatLoader";
 
 const drawerWidth = 240;
 
@@ -96,6 +97,7 @@ export default function Navigasi() {
     const theme = useTheme();
     const router = useRouter();
     const [open, setOpen] = React.useState(true);
+    const [loading, setLoading] = React.useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -106,6 +108,7 @@ export default function Navigasi() {
     };
 
     const logout = () => {
+        setLoading(true);
         fetch(setting.base_url+'user/logout', {
             method: 'POST',
             headers: {
@@ -147,8 +150,20 @@ export default function Navigasi() {
                     <Typography variant="h6" noWrap className={classes.title}>
                         Machine
                     </Typography>
-                    <Link href="/profil"><Button color="inherit">Profil</Button></Link>
-                    <Button onClick={(e)=>logout()} color="inherit">Logout</Button>
+                    {
+                        (loading) ? 
+                            <BeatLoader
+                                size={15}
+                                margin={2}
+                                color={"#ffffff"}
+                                loading={loading}
+                            />
+                            :
+                            <div>
+                            <Link href="/profil"><Button color="inherit">Profil</Button></Link>
+                            <Button onClick={(e)=>logout()} color="inherit">Logout</Button>
+                            </div>
+                    }
                 </Toolbar>
             </AppBar>
             <Drawer

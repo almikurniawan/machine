@@ -50,14 +50,15 @@ const Dailyreport = () => {
     const [dataMesin, setDataMesin] = useState([]);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            getDataDailyReport();
-        }, 10000);
-        return () => clearInterval(interval);
+        getDataDailyReport();
     }, [filterMesin]);
 
     useEffect(() => {
         getDataMesin();
+        const interval = setInterval(() => {
+            getDataDailyReport();
+        }, 10000);
+        return () => clearInterval(interval);
     }, []);
 
     const getDataMesin = () => {
@@ -70,12 +71,8 @@ const Dailyreport = () => {
         })
             .then(res => res.json())
             .then(result => {
-                if(result.status = 404){
-                    setLoading(false);
-                }else
                 if (!result.error) {
                     setDataMesin(result.data);
-                    setLoading(false);
                 } else {
                     localStorage.removeItem('token');
                     router.push('/login');
@@ -102,6 +99,7 @@ const Dailyreport = () => {
                     router.push('/login');
                 } else {
                     setData(result.data);
+                    setLoading(false);
                 }
             }).catch(error => {
             });
@@ -175,7 +173,7 @@ const Dailyreport = () => {
                                             <TableCell>{row.description}</TableCell>
                                             <TableCell>{row.width}</TableCell>
                                             <TableCell>{row.length}</TableCell>
-                                            <TableCell>{row.height}</TableCell>
+                                            <TableCell>{row.thick}</TableCell>
                                             <TableCell>{row.tanggal}</TableCell>
                                             <TableCell>{row.total}</TableCell>
                                             <TableCell>{row.volume}</TableCell>

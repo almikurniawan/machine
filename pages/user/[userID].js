@@ -60,9 +60,14 @@ class Edit extends React.Component {
         })
             .then(res => res.json())
             .then(result => {
-                self.setState({
-                    form: result.data[0]
-                });
+                if (result.message == 'Unauthorized access') {
+                    localStorage.removeItem('token');
+                    self.props.router.push('/login');
+                } else {
+                    self.setState({
+                        form: result.data[0]
+                    });
+                }
             });
     }
     simpan() {

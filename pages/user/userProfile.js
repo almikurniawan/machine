@@ -38,7 +38,6 @@ export default function userProfile() {
         })
             .then(res => res.json())
             .then(result => {
-                console.log(result)
                 if (!result.error) {
                     setData(result.data)
                 } else {
