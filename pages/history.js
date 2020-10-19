@@ -14,7 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Navigasi from '../component/navigasi';
 import TextField from '@material-ui/core/TextField';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import Grid from '@material-ui/core/Grid';
 import BarLoader from "react-spinners/BarLoader";
 import setting from '../component/setting';

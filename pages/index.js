@@ -11,6 +11,7 @@ import {
 	BarSeries,
 } from '@devexpress/dx-react-chart-material-ui';
 import setting from '../component/setting';
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Index = () => {
 	const classes = useStyles();
+	const router = useRouter();
 	const [data, setData] = useState([]);
 	const [grid, setGrid] = useState([]);
 	const [ukuranXS, setUkuranXS] = useState(4)
