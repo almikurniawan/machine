@@ -5,7 +5,7 @@ services:
         restart: always
         build: .
         ports:
-            - '2001:2001'
+            - '2002:2002'
         networks:
             - 'server'
 networks:
