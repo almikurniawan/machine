@@ -16,4 +16,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 2001
-CMD [ "npm run dev"]
+CMD [ "node", "server.js"]
