@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+    app:
+        container_name: web-machine-counter
+        restart: always
+        build: .
+        ports:
+            - '2001:2001'
+        networks:
+            - 'server'
+networks:
+    server:
+        name: server
+        driver: bridge
