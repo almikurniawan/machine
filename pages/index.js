@@ -43,10 +43,13 @@ const Index = () => {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
+		getDataGrid();
+		getDataDailyReport();
+		
 		const interval = setInterval(() => {
 			getDataGrid();
 			getDataDailyReport();
-		}, 10000);
+		}, 1000);
 		return () => clearInterval(interval);
 	}, []);
 

@@ -55,9 +55,10 @@ const Dailyreport = () => {
 
     useEffect(() => {
         getDataMesin();
+        getDataDailyReport();
         const interval = setInterval(() => {
             getDataDailyReport();
-        }, 10000);
+        }, 1000);
         return () => clearInterval(interval);
     }, []);
 
